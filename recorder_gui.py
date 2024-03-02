@@ -1,7 +1,9 @@
 import tkinter as tk
 import os
+from text_convert import TextConvert
 from recorder import AudioRecorder
 from playback import SoundPlayer, WAVReader, SoundPlayer_update
+from trim_gui import AudioEditor
 import threading
 
 class RecorderApp:
@@ -26,14 +28,17 @@ class RecorderApp:
 
         self.recorder = AudioRecorder()
         self.WAVReader = WAVReader(None)
-
+        
+         
         self.player = SoundPlayer_update(self.WAVReader, self.playback_finished)
         self.root.mainloop()
     
     def load_recorded_files(self):
         recorded_files = [file for file in os.listdir("recorded_files") if file.endswith(".wav")]
-
         recorded_files = sorted(recorded_files)
+        
+        text_converter = TextConvert(recorded_files)
+        text_converter.RecordProcess()
         
         self.listbox.delete(0, tk.END)
 
